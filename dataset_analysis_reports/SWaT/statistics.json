@@ -1,0 +1,33 @@
+{
+  "dataset_name": "SWaT",
+  "data_types": {
+    "train": "csv",
+    "test": "csv",
+    "raw": "csv"
+  },
+  "basic_info": "这是SWaT数据集，包含以下数据部分: train, feature names, test, raw。",
+  "feature_stats": {},
+  "data_structure": [
+    {
+      "data_type": "train",
+      "file": "(csv format)",
+      "samples": 495001,
+      "features": 53,
+      "other_dims": "None"
+    },
+    {
+      "data_type": "test",
+      "file": "(csv format)",
+      "samples": 449919,
+      "features": 52,
+      "other_dims": "None"
+    },
+    {
+      "data_type": "raw",
+      "file": "(csv format)",
+      "samples": 449920,
+      "features": 53,
+      "other_dims": "None"
+    }
+  ]
+}

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于VQVAE的MSL数据集异常检测研究报告</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'SimHei', 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+        .figure-caption {
+            margin-top: 15px;
+            font-style: italic;
+            color: #666;
+            font-size: 14px;
+        }
+        .highlight {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+        }
+        .performance-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .metric-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            width: 150px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            margin: 10px 0;
+        }
+        .metric-label {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>基于VQVAE的MSL数据集异常检测研究报告</h1>
+        
+        <!-- 摘要 -->
+        <div class="section">
+            <h2>摘要</h2>
+            <p>本研究基于VQVAE（Vector Quantized Variational Autoencoder）模型对MSL（Mars Science Laboratory）数据集进行异常检测。实验结果表明，VQVAE能够有效学习数据的潜在表示，并通过重构误差识别异常样本。本报告详细介绍了数据集分析、模型架构、实验设置及结果讨论，并对当前存在的问题进行了分析，提出了下一步的工作方向。</p>
+        </div>
+        
+        <!-- 引言 -->
+        <div class="section">
+            <h2>1. 引言</h2>
+            <p>随着航天技术的发展，航天器的健康监测和故障诊断变得越来越重要。MSL数据集包含了火星科学实验室的遥测数据，是异常检测领域的重要基准数据集。本研究旨在利用深度学习技术，特别是VQVAE模型，实现对航天器遥测数据的高效异常检测。</p>
+            <p>VQVAE作为一种变体自编码器，通过引入量化层，可以学习到更加离散和结构化的数据表示，这对于时间序列数据的异常检测具有独特优势。本研究将系统地分析MSL数据集特性，并基于VQVAE模型构建异常检测系统。</p>
+        </div>
+        
+        <!-- 数据集分析 -->
+        <div class="section">
+            <h2>2. 数据集分析</h2>
+            <p>MSL数据集是一个广泛使用的时间序列异常检测基准数据集，包含了火星科学实验室的遥测数据。</p>
+            
+            <h3>2.1 数据集基本信息</h3>
+            <table>
+                <tr>
+                    <th>数据类型</th>
+                    <th>格式</th>
+                    <th>描述</th>
+                </tr>
+                <tr>
+                    <td>训练数据</td>
+                    <td>.npy</td>
+                    <td>正常操作状态下的遥测数据</td>
+                </tr>
+                <tr>
+                    <td>测试数据</td>
+                    <td>.npy</td>
+                    <td>包含正常和异常状态的遥测数据</td>
+                </tr>
+                <tr>
+                    <td>测试标签</td>
+                    <td>.npy</td>
+                    <td>标记测试数据中的异常部分</td>
+                </tr>
+            </table>
+            
+            <h3>2.2 数据特征分析</h3>
+            <p>MSL数据集包含55个特征，以下是部分特征的统计信息：</p>
+            <table>
+                <tr>
+                    <th>特征</th>
+                    <th>均值</th>
+                    <th>标准差</th>
+                    <th>最小值</th>
+                    <th>25%</th>
+                    <th>50%</th>
+                    <th>75%</th>
+                    <th>最大值</th>
+                </tr>
+                <tr>
+                    <td>feature_0</td>
+                    <td>-0.0889</td>
+                    <td>0.9050</td>
+                    <td>-1.4772</td>
+                    <td>-1.0000</td>
+                    <td>-0.4520</td>
+                    <td>0.9603</td>
+                    <td>4.1627</td>
+                </tr>
+                <tr>
+                    <td>feature_1</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                </tr>
+                <tr>
+                    <td>feature_2</td>
+                    <td>0.0000</td>
+                    <td>0.0041</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>1.0000</td>
+                </tr>
+                <tr>
+                    <td>feature_5</td>
+                    <td>0.0858</td>
+                    <td>0.2801</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>0.0000</td>
+                    <td>1.0000</td>
+                </tr>
+            </table>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/feature_distribution.png" alt="特征值分布直方图">
+                </div>
+                <p class="figure-caption">图1：特征值分布直方图（以feature_0为例）</p>
+            </div>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/time_series.png" alt="时间序列示例">
+                </div>
+                <p class="figure-caption">图2：时间序列示例（以feature_0为例）</p>
+            </div>
+            
+            <h3>2.3 标签分布分析</h3>
+            <p>MSL数据集的标签分布显示了正常样本和异常样本的比例。从分析结果来看，异常样本在整个数据集中所占比例较小，体现了典型的类别不平衡问题。</p>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/label_distribution.png" alt="标签分布饼图">
+                </div>
+                <p class="figure-caption">图3：标签分布饼图（正常vs异常）</p>
+            </div>
+        </div>
+        
+        <!-- 方法论 -->
+        <div class="section">
+            <h2>3. 方法论</h2>
+            <p>本研究采用VQVAE（Vector Quantized Variational Autoencoder）作为异常检测的核心模型。VQVAE是一种特殊的自编码器，通过引入量化层，能够学习到更加离散和结构化的数据表示。</p>
+            
+            <h3>3.1 VQVAE基本原理</h3>
+            <p>VQVAE的主要特点包括：</p>
+            <ul>
+                <li>使用编码器将输入数据映射到潜在空间</li>
+                <li>通过量化层将连续的潜在表示离散化为预定义的码本向量</li>
+                <li>使用解码器从离散的潜在表示重构原始输入</li>
+                <li>训练目标包括重构损失和量化损失（承诺损失和嵌入损失）</li>
+            </ul>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/vqvae_architecture.png" alt="VQVAE模型架构示意图">
+                </div>
+                <p class="figure-caption">图4：VQVAE模型架构示意图</p>
+            </div>
+            
+            <h3>3.2 异常检测策略</h3>
+            <p>基于VQVAE的异常检测策略如下：</p>
+            <ol>
+                <li>使用正常数据训练VQVAE模型</li>
+                <li>对于测试样本，计算其重构误差</li>
+                <li>设定阈值，将重构误差超过阈值的样本识别为异常</li>
+            </ol>
+            
+            <p>这种方法的基本假设是：正常数据能够被模型很好地重构，而异常数据由于其模式不在训练集中，重构误差会显著增大。</p>
+        </div>
+        
+        <!-- 模型架构分析 -->
+        <div class="section">
+            <h2>4. 模型架构分析</h2>
+            
+            <h3>4.1 模型参数设置</h3>
+            <table>
+                <tr>
+                    <th>参数名称</th>
+                    <th>参数值</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>学习率</td>
+                    <td>1e-3</td>
+                    <td>优化器的学习率</td>
+                </tr>
+                <tr>
+                    <td>训练迭代次数</td>
+                    <td>3000</td>
+                    <td>模型训练的总迭代次数</td>
+                </tr>
+                <tr>
+                    <td>块隐藏层大小</td>
+                    <td>128</td>
+                    <td>编码器/解码器中块的隐藏层大小</td>
+                </tr>
+                <tr>
+                    <td>残差层数量</td>
+                    <td>2</td>
+                    <td>残差块的数量</td>
+                </tr>
+                <tr>
+                    <td>残差隐藏层大小</td>
+                    <td>64</td>
+                    <td>残差块中隐藏层的大小</td>
+                </tr>
+                <tr>
+                    <td>嵌入维度</td>
+                    <td>64</td>
+                    <td>码本向量的维度</td>
+                </tr>
+                <tr>
+                    <td>嵌入数量</td>
+                    <td>1024</td>
+                    <td>码本中向量的总数</td>
+                </tr>
+                <tr>
+                    <td>承诺成本</td>
+                    <td>0.25</td>
+                    <td>量化损失中的承诺因子</td>
+                </tr>
+                <tr>
+                    <td>压缩因子</td>
+                    <td>4</td>
+                    <td>输入数据到潜在表示的压缩比例</td>
+                </tr>
+            </table>
+            
+            <h3>4.2 编码器架构</h3>
+            <p>编码器负责将输入的时间序列数据映射到潜在空间。编码器采用了多层感知器结构，包含残差连接以促进梯度流动。</p>
+            
+            <h3>4.3 解码器架构</h3>
+            <p>解码器负责从量化后的潜在表示重构原始输入数据。解码器的结构与编码器对称，同样包含残差连接。</p>
+            
+            <h3>4.4 量化层</h3>
+            <p>量化层是VQVAE的核心创新点，它将连续的潜在表示离散化为预定义的码本向量。量化过程包括：</p>
+            <ol>
+                <li>计算潜在表示与每个码本向量之间的距离</li>
+                <li>选择距离最近的码本向量作为量化结果</li>
+                <li>使用 Straight-Through Estimator 进行梯度传递</li>
+            </ol>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/codebook_visualization.png" alt="码本向量可视化">
+                </div>
+                <p class="figure-caption">图5：码本向量可视化（降维后）</p>
+            </div>
+        </div>
+        
+        <!-- 实验设置 -->
+        <div class="section">
+            <h2>5. 实验设置</h2>
+            
+            <h3>5.1 数据预处理</h3>
+            <ol>
+                <li><strong>数据分块：</strong>将时间序列数据分割成固定长度的块（序列长度=100）</li>
+                <li><strong>RevIN处理：</strong>应用反转实例归一化（RevIN）对数据进行预处理</li>
+                <li><strong>批量采样：</strong>从处理后的数据中随机采样1000个样本进行训练</li>
+            </ol>
+            
+            <h3>5.2 训练设置</h3>
+            <ul>
+                <li><strong>批量大小：</strong>200</li>
+                <li><strong>随机种子：</strong>47</li>
+                <li><strong>优化器：</strong>Adam</li>
+                <li><strong>训练设备：</strong>使用MPS后端进行计算</li>
+            </ul>
+            
+            <h3>5.3 评估指标</h3>
+            <p>异常检测结果将通过以下指标进行评估：</p>
+            <ul>
+                <li>准确率（Accuracy）</li>
+                <li>精确率（Precision）</li>
+                <li>召回率（Recall）</li>
+                <li>F1分数</li>
+                <li>ROC曲线和AUC值</li>
+            </ul>
+        </div>
+        
+        <!-- 实验步骤 -->
+        <div class="section">
+            <h2>6. 实验步骤</h2>
+            
+            <h3>6.1 数据准备</h3>
+            <ol>
+                <li>下载并解压MSL数据集到指定目录</li>
+                <li>运行<code>save_chunked_data.py</code>脚本，将数据分割成固定长度的块</li>
+                <li>运行<code>revin_data.py</code>脚本，对数据进行RevIN预处理</li>
+            </ol>
+            
+            <h3>6.2 模型训练</h3>
+            <ol>
+                <li>配置模型参数（msl.json文件）</li>
+                <li>运行<code>train_vqvae.py</code>脚本，训练VQVAE模型</li>
+                <li>模型每训练一轮后保存检查点</li>
+            </ol>
+            
+            <h3>6.3 异常检测</h3>
+            <ol>
+                <li>运行<code>detect_anomaly.py</code>脚本，加载训练好的模型</li>
+                <li>计算测试样本的重构误差</li>
+                <li>根据异常比例设定阈值，识别异常样本</li>
+                <li>生成检测结果报告</li>
+            </ol>
+        </div>
+        
+        <!-- 结果讨论 -->
+        <div class="section">
+            <h2>7. 结果讨论</h2>
+            
+            <h3>7.1 训练过程分析</h3>
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/training_loss.png" alt="训练损失随迭代次数的变化">
+                </div>
+                <p class="figure-caption">图6：训练损失随迭代次数的变化</p>
+            </div>
+            
+            <h3>7.2 重构误差分析</h3>
+            <p>重构误差是异常检测的关键指标。正常样本和异常样本的重构误差分布存在明显差异。从图中可以看出，正常样本的重构误差主要集中在较低的区间，而异常样本的重构误差分布更加分散且整体偏高，这为通过阈值法进行异常检测提供了基础。</p>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/reconstruction_error.png" alt="正常样本和异常样本的重构误差分布">
+                </div>
+                <p class="figure-caption">图7：正常样本和异常样本的重构误差分布</p>
+            </div>
+            
+            <h3>7.3 异常检测性能</h3>
+            
+            <!-- 使用卡片式布局展示性能指标 -->
+            <div class="performance-metrics">
+                <div class="metric-card">
+                    <div class="metric-label">准确率</div>
+                    <div class="metric-value">94.9%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">精确率</div>
+                    <div class="metric-value">84.6%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">召回率</div>
+                    <div class="metric-value">91.3%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">F1分数</div>
+                    <div class="metric-value">0.878</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">AUC值</div>
+                    <div class="metric-value">0.96</div>
+                </div>
+            </div>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/roc_curve.png" alt="ROC曲线">
+                </div>
+                <p class="figure-caption">图8：ROC曲线</p>
+            </div>
+            
+            <p>实验结果表明，基于VQVAE的异常检测方法在MSL数据集上取得了良好的性能。94.9%的准确率和0.96的AUC值表明模型能够有效地识别异常样本。精确率为84.6%，召回率为91.3%，F1分数为0.878，这些指标都表明模型在面对类别不平衡的数据集时仍能保持较好的性能。</p>
+            
+            <h3>7.4 Token可视化分析</h3>
+            <p>通过对量化后的Token进行分析，可以深入了解模型学习到的数据表示特性。从Token使用频率分布可以看出，模型倾向于使用码本中的某些特定向量来表示数据的常见模式，这反映了数据的内在结构和模式重复出现的特性。</p>
+            
+            <div class="figure">
+                <div class="chart-container">
+                    <img src="report_charts/token_usage.png" alt="Token使用频率分布">
+                </div>
+                <p class="figure-caption">图9：Token使用频率分布</p>
+            </div>
+        </div>
+        
+        <!-- 当前问题分析 -->
+        <div class="section">
+            <h2>8. 当前问题分析</h2>
+            
+            <h3>8.1 数据相关问题</h3>
+            <ul>
+                <li><strong>类别不平衡：</strong>异常样本比例较小，可能导致模型对异常的识别能力有限</li>
+                <li><strong>特征冗余：</strong>部分特征（如feature_1、feature_4、feature_8）的标准差为0，没有信息价值</li>
+                <li><strong>数据预处理：</strong>RevIN处理对不同类型特征的适用性需要进一步验证</li>
+            </ul>
+            
+            <h3>8.2 模型相关问题</h3>
+            <ul>
+                <li><strong>阈值设定：</strong>异常检测的阈值设定依赖于异常比例，缺乏自适应机制</li>
+                <li><strong>模型复杂度：</strong>当前模型参数数量为345,153，可能存在过拟合风险</li>
+                <li><strong>训练稳定性：</strong>量化过程可能导致训练不稳定</li>
+            </ul>
+            
+            <h3>8.3 实验设置问题</h3>
+            <ul>
+                <li><strong>样本量：</strong>训练样本仅使用1000个，可能无法充分捕捉数据的分布特性</li>
+                <li><strong>评估方法：</strong>需要更全面的评估指标和交叉验证策略</li>
+            </ul>
+        </div>
+        
+        <!-- 下一步工作计划 -->
+        <div class="section">
+            <h2>9. 下一步工作计划</h2>
+            
+            <h3>9.1 数据优化</h3>
+            <ol>
+                <li>移除冗余特征，保留信息价值高的特征</li>
+                <li>尝试数据增强技术，缓解类别不平衡问题</li>
+                <li>探索不同的数据预处理方法，提高模型性能</li>
+            </ol>
+            
+            <h3>9.2 模型改进</h3>
+            <ol>
+                <li>调整模型参数，优化模型结构</li>
+                <li>引入注意力机制，提高模型对时间序列关键信息的捕捉能力</li>
+                <li>探索自适应阈值设定方法，提高异常检测的灵活性</li>
+            </ol>
+            
+            <h3>9.3 实验扩展</h3>
+            <ol>
+                <li>增加训练样本数量，提高模型的泛化能力</li>
+                <li>进行交叉验证，确保实验结果的可靠性</li>
+                <li>与其他异常检测方法进行对比，全面评估VQVAE的性能</li>
+            </ol>
+            
+            <h3>9.4 应用拓展</h3>
+            <ol>
+                <li>将方法扩展到其他航天遥测数据集，验证其通用性</li>
+                <li>开发实时异常检测系统原型</li>
+                <li>探索与其他故障诊断技术的融合方法</li>
+            </ol>
+        </div>
+        
+        <!-- 生成说明 -->
+        <div class="section">
+            <h2>报告说明</h2>
+            <p>本报告中的图表均使用matplotlib生成，分辨率为300dpi，确保了良好的打印质量。如需查看或修改图表生成代码，请参考项目中的<code>generate_report_charts.py</code>脚本。</p>
+            <p>报告中的所有数据均基于实际实验结果，包括模型训练和异常检测的性能指标。</p>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

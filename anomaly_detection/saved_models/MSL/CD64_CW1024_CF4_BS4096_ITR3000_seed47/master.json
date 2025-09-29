@@ -1,0 +1,28 @@
+{
+    "start_time": "2025-09-25T11-44-10",
+    "config file": "anomaly_detection/scripts/msl.json",
+    "save directory": "anomaly_detection/saved_models/MSL/CD64_CW1024_CF4_BS4096_ITR3000_seed47",
+    "gpus": 0,
+    "summaries": {
+        "general_seed": 47,
+        "data initialization location": "cpu",
+        "device": "mps",
+        "vqvae_config": {
+            "model_name": "vqvae",
+            "model_save_name": "vqvae",
+            "pretrained": false,
+            "learning_rate": 0.001,
+            "num_training_updates": 3000,
+            "block_hidden_size": 128,
+            "num_residual_layers": 2,
+            "res_hidden_size": 64,
+            "embedding_dim": 64,
+            "num_embeddings": 1024,
+            "commitment_cost": 0.25,
+            "compression_factor": 4,
+            "dataset": "msl"
+        },
+        "total_time": 2287.991,
+        "log_path": "anomaly_detection/saved_models/MSL/CD64_CW1024_CF4_BS4096_ITR3000_seed47"
+    }
+}

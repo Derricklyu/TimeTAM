@@ -1,0 +1,1020 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSL数据集详细分析报告</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 { color: #2c3e50; }
+        h1 { border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        .section { margin-bottom: 30px; }
+        .stats-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .stats-table th, .stats-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        .stats-table th { background-color: #f2f2f2; }
+        .stats-table tr:nth-child(even) { background-color: #f9f9f9; }
+        .image-container { margin: 20px 0; text-align: center; }
+        .image-container img { max-width: 100%; height: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .caption { margin-top: 10px; font-style: italic; color: #666; }
+        .sample-data { overflow-x: auto; margin: 20px 0; }
+        .interactive-chart { margin: 30px 0; }
+        .conclusion { background-color: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 4px solid #3498db; }
+        .recommendation { background-color: #e8f5e9; padding: 20px; border-radius: 5px; border-left: 4px solid #2ecc71; margin-top: 20px; }
+        .highlight { background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <h1>MSL数据集详细分析报告</h1>
+    
+    <div class="section">
+        <h2>1. 数据集概述</h2>
+        <p>MSL (Mars Science Laboratory) 数据集是由美国国家航空航天局(NASA)提供的用于异常检测的经典数据集，包含火星科学实验室任务中的传感器数据。</p>
+        <div class="highlight">
+            <p><strong>数据集基本信息:</strong></p>
+            <ul>
+                <li><strong>数据格式:</strong> NumPy数组 (.npy)</li>
+                <li><strong>训练集大小:</strong> 58317 个样本，55 个特征</li>
+                <li><strong>测试集大小:</strong> 73729 个样本，55 个特征</li>
+                <li><strong>数据维度:</strong> 2维数组</li>
+                <li><strong>异常样本比例:</strong> 10.53%</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>2. 数据集样本展示</h2>
+        <p>以下是训练集的前5个样本数据：</p>
+        <div class="sample-data">
+            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>特征1</th>
+      <th>特征2</th>
+      <th>特征3</th>
+      <th>特征4</th>
+      <th>特征5</th>
+      <th>特征6</th>
+      <th>特征7</th>
+      <th>特征8</th>
+      <th>特征9</th>
+      <th>特征10</th>
+      <th>特征11</th>
+      <th>特征12</th>
+      <th>特征13</th>
+      <th>特征14</th>
+      <th>特征15</th>
+      <th>特征16</th>
+      <th>特征17</th>
+      <th>特征18</th>
+      <th>特征19</th>
+      <th>特征20</th>
+      <th>特征21</th>
+      <th>特征22</th>
+      <th>特征23</th>
+      <th>特征24</th>
+      <th>特征25</th>
+      <th>特征26</th>
+      <th>特征27</th>
+      <th>特征28</th>
+      <th>特征29</th>
+      <th>特征30</th>
+      <th>特征31</th>
+      <th>特征32</th>
+      <th>特征33</th>
+      <th>特征34</th>
+      <th>特征35</th>
+      <th>特征36</th>
+      <th>特征37</th>
+      <th>特征38</th>
+      <th>特征39</th>
+      <th>特征40</th>
+      <th>特征41</th>
+      <th>特征42</th>
+      <th>特征43</th>
+      <th>特征44</th>
+      <th>特征45</th>
+      <th>特征46</th>
+      <th>特征47</th>
+      <th>特征48</th>
+      <th>特征49</th>
+      <th>特征50</th>
+      <th>特征51</th>
+      <th>特征52</th>
+      <th>特征53</th>
+      <th>特征54</th>
+      <th>特征55</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.146646</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>2.146646</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>2.146646</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>2.151326</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>2.163807</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>3. 数据统计特征</h2>
+        <p>每个特征的基本统计信息如下：</p>
+        <div class="stats-table-container">
+            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>特征1</th>
+      <th>特征2</th>
+      <th>特征3</th>
+      <th>特征4</th>
+      <th>特征5</th>
+      <th>特征6</th>
+      <th>特征7</th>
+      <th>特征8</th>
+      <th>特征9</th>
+      <th>特征10</th>
+      <th>特征11</th>
+      <th>特征12</th>
+      <th>特征13</th>
+      <th>特征14</th>
+      <th>特征15</th>
+      <th>特征16</th>
+      <th>特征17</th>
+      <th>特征18</th>
+      <th>特征19</th>
+      <th>特征20</th>
+      <th>特征21</th>
+      <th>特征22</th>
+      <th>特征23</th>
+      <th>特征24</th>
+      <th>特征25</th>
+      <th>特征26</th>
+      <th>特征27</th>
+      <th>特征28</th>
+      <th>特征29</th>
+      <th>特征30</th>
+      <th>特征31</th>
+      <th>特征32</th>
+      <th>特征33</th>
+      <th>特征34</th>
+      <th>特征35</th>
+      <th>特征36</th>
+      <th>特征37</th>
+      <th>特征38</th>
+      <th>特征39</th>
+      <th>特征40</th>
+      <th>特征41</th>
+      <th>特征42</th>
+      <th>特征43</th>
+      <th>特征44</th>
+      <th>特征45</th>
+      <th>特征46</th>
+      <th>特征47</th>
+      <th>特征48</th>
+      <th>特征49</th>
+      <th>特征50</th>
+      <th>特征51</th>
+      <th>特征52</th>
+      <th>特征53</th>
+      <th>特征54</th>
+      <th>特征55</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>最小值</th>
+      <td>-1.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>最大值</th>
+      <td>2.193448</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.00000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.00000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>平均值</th>
+      <td>-0.492486</td>
+      <td>0.0</td>
+      <td>0.000100</td>
+      <td>0.000300</td>
+      <td>0.0</td>
+      <td>0.110300</td>
+      <td>0.000900</td>
+      <td>0.000100</td>
+      <td>0.0</td>
+      <td>0.000400</td>
+      <td>0.0</td>
+      <td>0.036300</td>
+      <td>0.011300</td>
+      <td>0.045300</td>
+      <td>0.05220</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000100</td>
+      <td>0.0</td>
+      <td>0.001500</td>
+      <td>0.000200</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.018200</td>
+      <td>0.000100</td>
+      <td>0.000400</td>
+      <td>0.0</td>
+      <td>0.000200</td>
+      <td>0.0</td>
+      <td>0.000400</td>
+      <td>0.0</td>
+      <td>0.021100</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.011200</td>
+      <td>0.0</td>
+      <td>0.00120</td>
+      <td>0.0</td>
+      <td>0.003200</td>
+      <td>0.0</td>
+      <td>0.000300</td>
+      <td>0.000100</td>
+      <td>0.012900</td>
+      <td>0.0</td>
+      <td>0.037200</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000400</td>
+      <td>0.000400</td>
+    </tr>
+    <tr>
+      <th>中位数</th>
+      <td>-1.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>标准差</th>
+      <td>0.826018</td>
+      <td>0.0</td>
+      <td>0.009999</td>
+      <td>0.017318</td>
+      <td>0.0</td>
+      <td>0.313263</td>
+      <td>0.029986</td>
+      <td>0.009999</td>
+      <td>0.0</td>
+      <td>0.019996</td>
+      <td>0.0</td>
+      <td>0.187036</td>
+      <td>0.105699</td>
+      <td>0.207961</td>
+      <td>0.22243</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.009999</td>
+      <td>0.0</td>
+      <td>0.038701</td>
+      <td>0.014141</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.133674</td>
+      <td>0.009999</td>
+      <td>0.019996</td>
+      <td>0.0</td>
+      <td>0.014141</td>
+      <td>0.0</td>
+      <td>0.019996</td>
+      <td>0.0</td>
+      <td>0.143718</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.105236</td>
+      <td>0.0</td>
+      <td>0.03462</td>
+      <td>0.0</td>
+      <td>0.056478</td>
+      <td>0.0</td>
+      <td>0.017318</td>
+      <td>0.009999</td>
+      <td>0.112843</td>
+      <td>0.0</td>
+      <td>0.189252</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.019996</td>
+      <td>0.019996</td>
+    </tr>
+    <tr>
+      <th>25%分位数</th>
+      <td>-1.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%分位数</th>
+      <td>-0.347504</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>4. 标签分布分析</h2>
+        <p>MSL数据集的标签分布呈现明显的不平衡特性，正常样本占大多数，而异常样本相对较少。</p>
+        
+        <div class="image-container">
+            <img src="msl_label_distribution_pie.png" alt="MSL标签分布饼图">
+            <div class="caption">图1: MSL测试集标签分布饼图</div>
+        </div>
+        
+        <div class="image-container">
+            <img src="msl_label_distribution_bar.png" alt="MSL标签分布条形图">
+            <div class="caption">图2: MSL测试集标签分布条形图</div>
+        </div>
+        
+        <div class="highlight">
+            <p><strong>标签分布详情:</strong></p>
+            <ul>
+                <li>正常样本: 65963 个，占比 89.47%</li>
+                <li>异常样本: 7766 个，占比 10.53%</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>5. 特征值分布分析</h2>
+        <p>各特征值的分布情况如下所示：</p>
+        
+        <div class="image-container">
+            <img src="msl_feature_distribution.png" alt="MSL特征值分布直方图">
+            <div class="caption">图3: MSL特征值分布直方图（前12个特征）</div>
+        </div>
+        
+        <p>从直方图可以看出，大部分特征的值分布情况，这有助于我们了解数据的基本特性和可能需要的预处理步骤。</p>
+    </div>
+    
+    <div class="section">
+        <h2>6. 时间序列分析</h2>
+        <p>MSL数据集是一个时间序列数据集，以下是部分特征的时间序列示例：</p>
+        
+        <div class="image-container">
+            <img src="msl_time_series.png" alt="MSL时间序列图">
+            <div class="caption">图4: MSL测试数据时间序列图（前5个特征的前500个时间步）</div>
+        </div>
+        
+        <p>红色点标记了数据中的异常点。从图中可以观察到，异常点通常出现在特征值发生显著变化的时刻。</p>
+        
+        <div class="interactive-chart">
+            <h3>6.1 交互式时间序列图</h3>
+            <p>点击下方链接查看交互式时间序列图：</p>
+            <a href="msl_interactive_time_series.html" target="_blank">MSL交互式时间序列图</a>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>7. 特征相关性分析</h2>
+        <p>特征之间的相关性分析可以帮助我们了解数据的内部结构：</p>
+        
+        <div class="image-container">
+            <img src="msl_feature_correlation.png" alt="MSL特征相关性热力图">
+            <div class="caption">图5: MSL特征相关性热力图</div>
+        </div>
+        
+        <p>从热力图可以看出，某些特征之间存在较强的正相关或负相关关系，这可能反映了系统中各变量之间的内在联系。</p>
+        
+        <div class="interactive-chart">
+            <h3>7.1 交互式相关性热力图</h3>
+            <p>点击下方链接查看交互式相关性热力图：</p>
+            <a href="msl_interactive_correlation.html" target="_blank">MSL交互式特征相关性热力图</a>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>8. 特征箱线图分析</h2>
+        <p>箱线图可以帮助我们识别数据中的异常值和分布情况：</p>
+        
+        <div class="image-container">
+            <img src="msl_feature_boxplot.png" alt="MSL特征箱线图">
+            <div class="caption">图6: MSL特征箱线图（前12个特征）</div>
+        </div>
+        
+        <p>从箱线图可以看出，各特征的值分布情况以及可能存在的异常值。</p>
+    </div>
+    
+    <div class="section">
+        <h2>9. 数据特点总结</h2>
+        
+        <div class="conclusion">
+            <h3>主要发现</h3>
+            <ol>
+                <li><strong>数据标准化:</strong> 观察统计特征，MSL数据集可能已经过一定的标准化处理</li>
+                <li><strong>类别不平衡:</strong> 异常样本仅占10.53%，正常样本占89.47%，属于典型的不平衡数据集</li>
+                <li><strong>特征分布:</strong> 各特征呈现不同的分布特性，有的集中在某个范围内，有的分布较为分散</li>
+                <li><strong>特征相关性:</strong> 部分特征之间存在较强的相关性，这可能反映了系统的内部联系</li>
+                <li><strong>多维时间序列:</strong> 数据为55维时间序列，适合用于时间序列异常检测任务</li>
+            </ol>
+        </div>
+        
+        <div class="recommendation">
+            <h3>实验建议</h3>
+            <h4>数据预处理建议:</h4>
+            <ul>
+                <li>确认数据是否需要进一步的标准化或归一化处理</li>
+                <li>由于数据不平衡，可以考虑使用SMOTE等过采样技术</li>
+                <li>可以尝试将数据转换为不同长度的时间窗口序列</li>
+                <li>考虑基于相关性进行特征选择或降维</li>
+            </ul>
+            
+            <h4>模型选择建议:</h4>
+            <ul>
+                <li>适合使用LSTM、GRU、Transformer等时序模型</li>
+                <li>自编码器类模型（VAE、AE）也是很好的选择</li>
+                <li>考虑使用集成学习方法提高检测性能</li>
+                <li>可以尝试基于注意力机制的模型，关注异常时刻</li>
+            </ul>
+            
+            <h4>评估指标建议:</h4>
+            <ul>
+                <li>使用F1分数作为主要评价指标（对不平衡数据更敏感）</li>
+                <li>同时关注精确率和召回率</li>
+                <li>使用ROC曲线和AUC值评估模型性能</li>
+                <li>考虑使用PR曲线和平均精确率</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>10. 结论</h2>
+        <p>MSL数据集是一个高质量的异常检测基准数据集，具有典型的时间序列特性和类别不平衡特点。通过本报告的详细分析，我们对数据集的结构、分布和特点有了全面的了解，为后续的异常检测实验提供了重要的参考依据。</p>
+        <p>建议在后续实验中充分考虑数据集的不平衡性和时间序列特性，选择合适的模型和评价指标，以获得更好的检测效果。</p>
+    </div>
+    
+    <footer>
+        <p style="text-align: center; color: #666; margin-top: 50px;">MSL数据集分析报告 © 2025</p>
+    </footer>
+</body>
+</html>

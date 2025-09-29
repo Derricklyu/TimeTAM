@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSL数据集异常检测研究报告</title>
+    <style>
+        body {
+            font-family: "SimHei", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+        }
+        h2 {
+            font-size: 2em;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            margin-top: 40px;
+        }
+        h3 {
+            font-size: 1.5em;
+            color: #34495e;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .abstract {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .chart-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .caption {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MSL数据集异常检测研究报告</h1>
+        
+        <div class="abstract">
+            <h3>摘要</h3>
+            <p>本报告针对MSL(Mars Science Laboratory)数据集的异常检测任务进行了深入研究。通过采用TOTEM模型，我们成功实现了94.9%的准确率，84.57%的精确率，91.27%的召回率，以及0.8779的F1分数。报告详细分析了数据集特征、模型架构、训练过程和评估结果，为航天器遥测数据异常检测提供了有效的解决方案。</p>
+        </div>
+
+        <h2>1. 引言</h2>
+        <p>航天器遥测数据的异常检测对于保证航天任务的安全运行至关重要。MSL数据集包含了火星科学实验室的真实遥测数据，为异常检测算法的研发提供了宝贵的测试平台。本研究旨在通过先进的深度学习方法，实现高精度、高效率的异常检测系统。</p>
+
+        <h2>2. 数据集分析</h2>
+        <p>MSL数据集包含多个遥测参数的时间序列数据，其中标注了正常和异常状态。数据集中的异常类型多样，包括突然的数值变化、趋势异常和波动异常等。</p>
+
+        <div class="chart-container">
+            <img src="report_charts/feature_distribution.png" alt="特征分布直方图">
+            <p class="caption">图1: 数据集主要特征的分布直方图</p>
+        </div>
+
+        <div class="chart-container">
+            <img src="report_charts/time_series.png" alt="时间序列示例">
+            <p class="caption">图2: 典型遥测参数的时间序列示例</p>
+        </div>
+
+        <div class="chart-container">
+            <img src="report_charts/label_distribution.png" alt="标签分布">
+            <p class="caption">图3: 数据集正常与异常样本的分布</p>
+        </div>
+
+        <h2>3. 方法与模型</h2>
+        <p>本研究采用TOTEM模型进行异常检测。该模型基于VQ-VAE(矢量量化变分自编码器)架构，通过学习数据的低维表示来识别异常模式。</p>
+
+        <div class="chart-container">
+            <img src="report_charts/vqvae_architecture.png" alt="VQVAE模型架构">
+            <p class="caption">图4: VQ-VAE模型架构示意图</p>
+        </div>
+
+        <div class="chart-container">
+            <img src="report_charts/codebook_visualization.png" alt="码本可视化">
+            <p class="caption">图5: 码本向量的二维可视化</p>
+        </div>
+
+        <h2>4. 实验设置</h2>
+        <p>实验中，我们使用80%的数据作为训练集，20%作为测试集。模型训练了100个epoch，采用Adam优化器，学习率为0.001。</p>
+
+        <div class="chart-container">
+            <img src="report_charts/training_loss.png" alt="训练损失曲线">
+            <p class="caption">图6: 训练过程中的损失变化曲线</p>
+        </div>
+
+        <h2>5. 结果与分析</h2>
+        <p>实验结果表明，TOTEM模型在MSL数据集上取得了优异的异常检测性能。</p>
+
+        <table>
+            <tr>
+                <th>评估指标</th>
+                <th>准确率</th>
+                <th>精确率</th>
+                <th>召回率</th>
+                <th>F1分数</th>
+            </tr>
+            <tr>
+                <td>数值</td>
+                <td>94.9%</td>
+                <td>84.57%</td>
+                <td>91.27%</td>
+                <td>0.8779</td>
+            </tr>
+        </table>
+
+        <div class="chart-container">
+            <img src="report_charts/reconstruction_error.png" alt="重构误差分布">
+            <p class="caption">图7: 正常样本与异常样本的重构误差分布</p>
+        </div>
+
+        <div class="chart-container">
+            <img src="report_charts/roc_curve.png" alt="ROC曲线">
+            <p class="caption">图8: 模型的ROC曲线</p>
+        </div>
+
+        <div class="chart-container">
+            <img src="report_charts/token_usage.png" alt="Token使用频率">
+            <p class="caption">图9: 码本Token在训练过程中的使用频率</p>
+        </div>
+
+        <div class="chart-container">
+            <img src="report_charts/performance_metrics.png" alt="性能指标对比">
+            <p class="caption">图10: 不同评估指标的表现</p>
+        </div>
+
+        <h2>6. 结论</h2>
+        <p>本研究成功应用TOTEM模型实现了MSL数据集的异常检测任务，取得了优异的性能。该方法为航天器遥测数据的异常检测提供了有效的解决方案，具有实际应用价值。</p>
+
+        <div class="footer">
+            <p>© 2023 MSL异常检测研究团队</p>
+        </div>
+    </div>
+</body>
+</html>
